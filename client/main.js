@@ -11,6 +11,8 @@ import { bushes } from "./bushlocation.js";
 ctx.imageSmoothingEnabled = true;
 ctx.imageSmoothingQuality = 'high';
 
+
+// ścieżki zdjęć
 const imageSources = {
     playerimg: 'images/player.svg',
     playerAnimation1: 'images/playerAnimation1.svg',
@@ -23,6 +25,8 @@ const imageSources = {
     patch5: 'images/elipsa5.png',
     patch6: 'images/elipsa6.png',
 };
+
+// ładowanie obrazów
 
 let loadedImages = {};
 
@@ -49,15 +53,17 @@ Promise.all(
 
 let isGameRunning = false;
 
+
+// Ustawienia gracza
 const playerConfig = { size: 90, speed: 5 };
 
 
-
+// Pojawienie się gracza w losowych miescu blisko środka mapy
 let randomx = 5000 + Math.random() * 1000;
 let randomy = 5000 + Math.random() * 1000;
 
 
-
+// Reszta ustawień gracza
 let player = {
     x: randomx,
     y: randomy,
@@ -67,6 +73,7 @@ let player = {
     ...playerConfig,
 };
 
+// Wiekość mapy
 const mapWidth = 10000;
 const mapHeight = 10000;
 
@@ -75,7 +82,7 @@ const otherPlayers = {};
 
 
 
-
+// ustawienia plam (tekstur)
 const patches = [
     {"x": 7515, "y": 2208, "rotate": 5.574062402602593},
     {"x": 6664, "y": 6594, "rotate": 2.757768001200467},
@@ -141,6 +148,8 @@ const patches6 = [
 
 let socket = null;
 
+// Ustawienie canvasa na szerokosc okna
+
 function resizeCanvas() {
     bgcanvas.width = window.innerWidth;
     bgcanvas.height = window.innerHeight;
@@ -152,6 +161,7 @@ function resizeCanvas() {
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
 
+// Utworzenie obiektu obslugi wciśnietych klawiszy
 const pressedKeys = new Set();
 
 function handleKeyDown(event) {
@@ -166,6 +176,8 @@ function updateLocalPlayerPosition() {
     let moved = true;
 
     
+
+// Logika poruszania sie gracza
 
     if (pressedKeys.has('w') || pressedKeys.has('W')) {
         player.y -= player.speed;
@@ -184,6 +196,8 @@ function updateLocalPlayerPosition() {
         moved = true;
     }
 
+    // Border mapy
+
     if (player.x < player.size / 2) {
         player.x = player.size / 2;
     }
@@ -198,7 +212,7 @@ function updateLocalPlayerPosition() {
     }
     
 
-
+// wysylanie danych gracza na serwer
     if (moved && socket && player.id) {
         socket.send(JSON.stringify({
             type: 'move',
@@ -211,6 +225,7 @@ function updateLocalPlayerPosition() {
 }
 
 
+// rysowanie mapy względem gracza
 function drawMap() {
     const offsetX = player.x - canvas.width / 2;
     const offsetY = player.y - canvas.height / 2;
@@ -221,7 +236,7 @@ function drawMap() {
 
 
 
-
+// Rysowanie plam 
     patches.forEach(patch => {
         if (
             patch.x - offsetX + 2000 > 0 &&
@@ -346,6 +361,8 @@ function drawMap() {
 }
 
 
+
+// Rysowanie objektów
 function drawObjects(){
 
     const offsetX = player.x - canvas.width / 2;
@@ -370,7 +387,7 @@ function drawObjects(){
     });
 }
 
-
+// sprawdzanie kolizjii z krzakiem w kształcie elipsy
 function isPointInEllipse(px, py, ellipse) {
     const dx = px - ellipse.cx;
     const dy = py - ellipse.cy;
@@ -379,7 +396,7 @@ function isPointInEllipse(px, py, ellipse) {
 
 function checkCollisionRectWithEllipse(player, bushes) {
     for (let bush of bushes) {
-        // Wierzchołki prostokąta gracza
+        
         const rectCorners = [
             { x: player.x, y: player.y },
             { x: player.x + player.size, y: player.y },
@@ -390,18 +407,18 @@ function checkCollisionRectWithEllipse(player, bushes) {
         // Sprawdź, czy jakikolwiek wierzchołek znajduje się w elipsie
         for (let corner of rectCorners) {
             if (isPointInEllipse(corner.x, corner.y, bush)) {
-                return true; // Kolizja
+                return true;
             }
         }
 
-        // Sprawdź, czy środek elipsy znajduje się w prostokącie
+        // Sprawdź, czy środek elipsy znajduje się w prostokącie (graczu)
         if (
             bush.cx >= player.x &&
             bush.cx <= player.x + player.size &&
             bush.cy >= player.y &&
             bush.cy <= player.y + player.size
         ) {
-            return true; // Kolizja
+            return true;
         }
 
         // Opcjonalnie: sprawdź, czy jakakolwiek krawędź prostokąta przecina elipsę
@@ -414,7 +431,7 @@ function checkCollisionRectWithEllipse(player, bushes) {
 
         for (let edge of edges) {
             if (isLineIntersectingEllipse(edge.x1, edge.y1, edge.x2, edge.y2, bush)) {
-                return true; // Kolizja
+                return true;
             }
         }
     }
@@ -422,9 +439,8 @@ function checkCollisionRectWithEllipse(player, bushes) {
     return false; // Brak kolizji
 }
 
-// Pomocnicza funkcja: czy linia przecina elipsę
+
 function isLineIntersectingEllipse(x1, y1, x2, y2, ellipse) {
-    // Translacja do współrzędnych elipsy
     const dx = x2 - x1;
     const dy = y2 - y1;
 
@@ -439,6 +455,9 @@ function isLineIntersectingEllipse(x1, y1, x2, y2, ellipse) {
 
     return discriminant >= 0; // Jeśli >= 0, linia przecina elipsę
 }
+
+
+// Obsługa kolizji z krzakiem
 
 function bushColision(){
 
@@ -507,7 +526,7 @@ function bushColision(){
 
 }
 
-
+// Rysowanie elementów overlayu
 
 function drawOverlay() {
 
@@ -582,25 +601,25 @@ function drawOverlay() {
     const tableWidth = 160;
     const tableX = olcanvas.width - tableWidth - 10;
     const tableY = 10;
-    const borderRadius = 20; // Promień zaokrąglenia rogów
+    const borderRadius = 20;
 
     olctx.save();
     olctx.fillStyle = "rgba(0, 0, 0, 0.3)";
 
     // Ścieżka prostokąta z zaokrąglonymi rogami
     olctx.beginPath();
-    olctx.moveTo(tableX + borderRadius, tableY); // Start: górny-lewy róg (po zaokrągleniu)
-    olctx.lineTo(tableX + tableWidth - borderRadius, tableY); // Górna krawędź
-    olctx.arcTo(tableX + tableWidth, tableY, tableX + tableWidth, tableY + borderRadius, borderRadius); // Górny-prawy róg
-    olctx.lineTo(tableX + tableWidth, tableY + tableHeigh - borderRadius); // Prawa krawędź
-    olctx.arcTo(tableX + tableWidth, tableY + tableHeigh, tableX + tableWidth - borderRadius, tableY + tableHeigh, borderRadius); // Dolny-prawy róg
-    olctx.lineTo(tableX + borderRadius, tableY + tableHeigh); // Dolna krawędź
-    olctx.arcTo(tableX, tableY + tableHeigh, tableX, tableY + tableHeigh - borderRadius, borderRadius); // Dolny-lewy róg
-    olctx.lineTo(tableX, tableY + borderRadius); // Lewa krawędź
-    olctx.arcTo(tableX, tableY, tableX + borderRadius, tableY, borderRadius); // Górny-lewy róg
+    olctx.moveTo(tableX + borderRadius, tableY);
+    olctx.lineTo(tableX + tableWidth - borderRadius, tableY);
+    olctx.arcTo(tableX + tableWidth, tableY, tableX + tableWidth, tableY + borderRadius, borderRadius);
+    olctx.lineTo(tableX + tableWidth, tableY + tableHeigh - borderRadius); 
+    olctx.arcTo(tableX + tableWidth, tableY + tableHeigh, tableX + tableWidth - borderRadius, tableY + tableHeigh, borderRadius);
+    olctx.lineTo(tableX + borderRadius, tableY + tableHeigh); 
+    olctx.arcTo(tableX, tableY + tableHeigh, tableX, tableY + tableHeigh - borderRadius, borderRadius);
+    olctx.lineTo(tableX, tableY + borderRadius); 
+    olctx.arcTo(tableX, tableY, tableX + borderRadius, tableY, borderRadius); 
     olctx.closePath();
 
-    olctx.fill(); // Wypełnienie prostokąta
+    olctx.fill(); 
     olctx.restore();
     // =================================================
 
@@ -656,7 +675,7 @@ let i = 1;
 // ===================== Gracze =======================
 
 
-
+//  Animacja uderzenia
 
 
 let mouseDown = false;
@@ -711,6 +730,8 @@ function stopAnimation() {
 
 let firstStart = true;
 
+// Rysowanie graczy
+
 function drawPlayers() {    
         
     if(firstStart){
@@ -739,11 +760,11 @@ function drawPlayers() {
     ctx.save();  
 
     
-    ctx.font = "15px Arial";  // Czcionka
-    ctx.fillStyle = "rgba(255, 255, 255, 0.6)";  // Kolor tekstu
-    ctx.textAlign = "center";  // Wyśrodkowanie tekstu
-    ctx.textBaseline = "bottom";  // Ustawienie tekstu nad postacią
-    ctx.fillText(player.name, canvas.width / 2, canvas.height / 2 - player.size / 2);  // Imię nad postacią
+    ctx.font = "15px Arial"; 
+    ctx.fillStyle = "rgba(255, 255, 255, 0.6)";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "bottom"; 
+    ctx.fillText(player.name, canvas.width / 2, canvas.height / 2 - player.size / 2); 
     ctx.restore(); 
 
     
@@ -774,7 +795,7 @@ function drawPlayers() {
     }
 }
 
-
+// Obracanie gracza w stronę kursora
 function calculateAngle(mouseX, mouseY) {
     const offsetX = player.x - canvas.width / 2;
     const offsetY = player.y - canvas.height / 2;
@@ -798,7 +819,7 @@ canvas.addEventListener('mousemove', (event) => {
 
 
 
-
+// Aktualizowanie danych graczy
 function updatePlayers(playersData) {
     for (const id in playersData) {
         if (id !== player.id) {
@@ -815,6 +836,8 @@ function removePlayer(id) {
     delete otherPlayers[id];
 }
 
+
+// Obsługa logowania się do gry
 document.getElementById('loginButton').addEventListener('click', () => {
     const playerName = document.getElementById('playerName').value.trim();
 
@@ -855,6 +878,7 @@ document.getElementById('loginButton').addEventListener('click', () => {
     }
 });
 
+// Główna petla gry
 function gameLoop() {
     if (!isGameRunning) return;
     updateLocalPlayerPosition();

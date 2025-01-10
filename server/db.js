@@ -1,0 +1,1 @@
+// W przyszłości połączenia z bazą

@@ -23,7 +23,8 @@ wss.on('connection', (ws) => {
             return;
         }
 
-
+        
+        // Obsluga logowania
 
         if(data.type === 'login'){
 
@@ -46,6 +47,9 @@ wss.on('connection', (ws) => {
             });   
         }
     });
+
+
+    // Obsluga wylogowania
 
     ws.on('close', () => {
         console.log('Player disconnected');

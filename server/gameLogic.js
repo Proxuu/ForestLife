@@ -13,4 +13,6 @@ function updatePlayerPosition(id, name, x, y, angle){
         }
 }
 
+// W przyszłości więcej logiki w tym miejscu
+
 module.exports = {addPlayer, updatePlayerPosition, players};
