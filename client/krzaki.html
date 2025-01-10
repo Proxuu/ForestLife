@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rozmieszczenie obiektów</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="1000" height="1000"></canvas>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Zakres współrzędnych
+        const xMin = 200, xMax = 9100;
+        const yMin = 200, yMax = 9100;
+
+        // Liczba obiektów
+        const nObjects = 209;
+
+        // Obliczamy liczbę wierszy i kolumn
+        const rows = Math.ceil(Math.sqrt(nObjects));
+        const cols = Math.ceil(nObjects / rows);
+
+        // Obliczamy odległości między punktami
+        const xStep = (xMax - xMin) / (cols - 1);
+        const yStep = (yMax - yMin) / (rows - 1);
+
+        // Tablica do przechowywania obiektów
+        const objects = [];
+
+        // Generujemy obiekty
+        for (let i = 0; i < rows; i++) {
+            for (let j = 0; j < cols; j++) {
+                if (objects.length < nObjects) {
+                    const x = xMin + j * xStep + Math.random() * 700;
+                    const y = yMin + i * yStep + Math.random() * 700;
+
+                    // Współrzędne centralne (cx, cy) obiektu
+                    const cx = x + 90;  // środek w poziomie (x + połowa szerokości)
+                    const cy = y + 70;  // środek w pionie (y + połowa wysokości)
+
+                    // Wymiary prostokąta (a, b)
+                    const a = 70;
+                    const b = 70;
+
+                    // Dodajemy obiekt do tablicy
+                    objects.push({ x, y, width: 160, height: 140, cx, cy, a, b });
+                }
+            }
+        }
+
+        // Rysujemy obiekty na canvasie
+        objects.forEach(obj => {
+            ctx.beginPath();
+            ctx.rect(obj.x / 10, obj.y / 10, obj.width / 10, obj.height / 10);  // Rysowanie prostokąta
+            ctx.fillStyle = 'rgba(0, 0, 255, 0.5)';  // Kolor wypełnienia
+            ctx.fill();
+
+            // Rysowanie środków obiektów
+            ctx.beginPath();
+            ctx.arc(obj.cx / 10, obj.cy / 10, 2, 0, Math.PI * 2);  // Środek obiektu
+            ctx.fillStyle = 'red';
+            ctx.fill();
+        });
+
+        console.log(objects);
+
+    </script>
+</body>
+</html>
+
+
