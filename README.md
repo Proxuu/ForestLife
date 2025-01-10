@@ -1,4 +1,4 @@
-ForestLife (Krótki opis projektu):
+<h1>ForestLife (Krótki opis projektu):</h1>
 
 ForestLife to przeglądarkowa gra survivalowa inspirowana grami w stylu .io. Gracze pojawiają się na mapie i muszą przetrwać, korzystając z pozyskanych surowców, budując bazy, zawierając sojusze oraz walcząc z innymi graczami.
 
