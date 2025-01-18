@@ -1,8 +1,13 @@
-<h1>ForestLife (Krótki opis projektu)</h1>
+# ForestLife (Krótki opis projektu)
 
 ForestLife to przeglądarkowa gra survivalowa inspirowana grami w stylu .io. Gracze pojawiają się na mapie i muszą przetrwać, korzystając z pozyskanych surowców, budując bazy, zawierając sojusze oraz walcząc z innymi graczami.
 
 
+<h2>Zrzut ekranu</h2>
+
+Przykładowy zrzut ekranu gry:  
+
+![Przykładowy zrzut ekranu gry](image.png)
 
 <h2>Instrukcja uruchomienia projektu</h2>
 
@@ -59,5 +64,5 @@ Projekt jest dostępny na licencji MIT, dzięki czemu możesz go używać, modyf
 
 Jeśli masz pytania lub propozycje, skontaktuj się ze mną:
 
-Email: kacper2019114@gmail.com
-GitHub: Proxuu
+**Email:** kacper2019114@gmail.com
+**GitHub:** Proxuu
