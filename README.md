@@ -65,4 +65,5 @@ Projekt jest dostępny na licencji MIT, dzięki czemu możesz go używać, modyf
 Jeśli masz pytania lub propozycje, skontaktuj się ze mną:
 
 **Email:** kacper2019114@gmail.com
+
 **GitHub:** Proxuu
